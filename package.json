@@ -1,0 +1,23 @@
+{
+  "name": "amazon",
+  "version": "1.0.0",
+  "description": "an amazon clone",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "keywords": [
+    "shop",
+    "clone",
+    "amazon",
+    "store"
+  ],
+  "author": "Basel Nsralla",
+  "license": "MIT",
+  "dependencies": {
+    "deepstream.io": "^2.4.0",
+    "deepstream.io-provider-search-rethinkdb": "^2.0.0",
+    "deepstream.io-storage-rethinkdb": "^1.0.2",
+    "rethinkdb": "^2.3.3"
+  }
+}
