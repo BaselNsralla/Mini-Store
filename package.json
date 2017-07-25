@@ -4,7 +4,8 @@
   "description": "an amazon clone",
   "main": "server.js",
   "scripts": {
-    "test": "node server.js"
+    "test": "node server.js",
+    "webpack": "webpack"
   },
   "keywords": [
     "shop",
@@ -15,9 +16,18 @@
   "author": "Basel Nsralla",
   "license": "MIT",
   "dependencies": {
+    "babel-core": "^6.25.0",
+    "babel-loader": "^7.1.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "deepstream.io": "^2.4.0",
     "deepstream.io-provider-search-rethinkdb": "^2.0.0",
     "deepstream.io-storage-rethinkdb": "^1.0.2",
-    "rethinkdb": "^2.3.3"
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "rethinkdb": "^2.3.3",
+    "webpack": "^3.3.0"
   }
 }

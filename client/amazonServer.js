@@ -1,6 +1,8 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+const http = require('http'),
+      fs = require('fs'),
+      path = require('path');
+const ds = require("deepstream.io-client-js")
+client = ds("http://localhost:8000").login()
 /*
 ^\/find$|^\/find\/[a-z]*$
 /find sen slut eller /find/något ord eller /find/
@@ -13,11 +15,30 @@ http.createServer((req,res)=>{
     getContent(category,res)
   }else if (req.url.match(/^\/make$/g)) {
       res.writeHead(200,{"Content-Type": "text/html"})
-      const readStream = fs.createReadStream(path.join(__dirnam,"create/create.html"))
+      const readStream = fs.createReadStream(
+        path.join(__dirname,"create/create.html")
+      )
       readStream.pipe(res)
+  }else if(req.url.match(/^\/getCategories$/g)){
+      getCategories()
+  }else if(req.url.match(/.js$/g)){
+    //TODO return the js files related, i have to change the webpack 
+    //entry and output
+
   }
 
 }).listen("8192")
+
+let getCategories = () =>{
+    let record = client.record.getRecord("/store")
+    record.whenReady(()=>{
+      console.log(record.get())
+    })
+
+    //TODO return data fetched from database as a json object to the createFrom
+}
+
+
 
 let answer = (res,record) =>{
   if (record==undefined) {

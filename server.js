@@ -1,5 +1,5 @@
 var Deepstream = require( 'deepstream.io' ),
-    RethinkDBStorageConnector = require( 'deepstream.io-storage-rethinkdb' );
+    RethinkDBStorageConnector = require( 'deepstream.io-storage-rethinkdb');
 
 var server = new Deepstream({port:8000})
 
