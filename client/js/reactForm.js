@@ -1,16 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 //vi testar utan ds här
-
+console.log("aaaa")
 
 class Category extends React.Component {
 
   constructor () {
     super()
+   
+  
     this.state = {
-      options : []
+      options : ["ape"],
+      alfa : ["aaass"]
     }
     this.getOptions()
+    
   }
   getOptions =  () => {
     console.log("gettingOptions")
@@ -19,23 +23,45 @@ class Category extends React.Component {
           console.log('====================================');
           console.log(data);
           console.log('====================================');
-          return JSON.parse(data)
+          data = JSON.parse(data)
+          return data.a
         }).then(data=>{
-             Object.keys(data).forEach(key=>{
-              this.setState({
-                options:this.state.options.push(<option>key</option>)
+            data.forEach(key=>{
+                this.setState({
+                options:this.state.options.push(key)
+
               })
+           
+           
 
-             })  
+         })
+       })
+      }
+  
+  
 
-        })
+
+  directOptions = () => {
+    return this.state.options.map(a=>{
+      return(
+          <option>{a}</option>
+
+      )
+
+    })
+
+
   }
+ 
 
   render () {
+     console.log("something")
     return (
-      <select>
-        {this.state.options}
-      </select>
+      <div>
+        <select>
+          {this.directOptions()}
+        </select>
+     </div>
     )
   }
 }

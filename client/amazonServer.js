@@ -3,13 +3,17 @@ const http = require('http'),
       path = require('path');
 const ds = require("deepstream.io-client-js")
 let client = ds("localhost:8000/deepstream").login()
-let getCategories = () =>{
+let getCategories = (res) =>{
     console.log("get CATEGORIES")
-    let record = client.record.getRecord("/store")
+    let record = client.record.getRecord("store")
+    res.writeHead(200,{"Content-type":"application/json"})
+    var responseObject =  {a:[]}
     record.whenReady(()=>{
       Object.values(record.get()).forEach(function(element) {
-       console.log(element) 
+        responseObject.a.push(element)
       });
+       res.write(responseObject)
+      res.end()
     })
 
     //TODO return data fetched from database as a json object to the createFrom
@@ -28,14 +32,13 @@ http.createServer((req,res)=>{
     res.writeHead(200,{"Content-Type": "text/html"})
     getContent(category,res)
   }else if (req.url.match(/^\/make$/g)) {
-    console.log("make")
       res.writeHead(200,{"Content-Type": "text/html"})
       p =  path.join(__dirname,"create/create.html")
       const readStream = fs.createReadStream(p)
       readStream.pipe(res)
   }else if(req.url.match(/^\/getCategories$/g)){
-      getCategories()
-      res.end()
+      getCategories(res)
+     
   }else if(req.url.match(/.js$/g)){
     //TODO return the js files related, i have to change the webpack 
     //entry and output
