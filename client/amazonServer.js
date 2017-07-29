@@ -6,13 +6,14 @@ let client = ds("localhost:8000/deepstream").login()
 let getCategories = (res) =>{
     console.log("get CATEGORIES")
     let record = client.record.getRecord("store")
-    res.writeHead(200,{"Content-type":"application/json"})
+    //res.writeHead(200,{"Content-type":"application/json"})
     var responseObject =  {a:[]}
     record.whenReady(()=>{
-      Object.values(record.get()).forEach(function(element) {
+      Object.keys(record.get()).forEach(function(element) {
+        console.log(element)
         responseObject.a.push(element)
       });
-       res.write(responseObject)
+       res.write(JSON.stringify(responseObject))
       res.end()
     })
 
@@ -36,6 +37,10 @@ http.createServer((req,res)=>{
       p =  path.join(__dirname,"create/create.html")
       const readStream = fs.createReadStream(p)
       readStream.pipe(res)
+      readStream.on("end",()=>{
+
+        res.end()
+      })
   }else if(req.url.match(/^\/getCategories$/g)){
       getCategories(res)
      
@@ -46,8 +51,10 @@ http.createServer((req,res)=>{
         p = path.join(__dirname,file),
         readStream  =fs.createReadStream(p)
         readStream.pipe(res)
-
-  }
+         readStream.on("end",()=>{
+           res.end()
+        })
+   }
 
 }).listen("8192")
 

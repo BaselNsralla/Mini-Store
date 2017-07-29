@@ -1,9 +1,9 @@
 
 module.exports = {
-   devtool: 'inline-source-map',
+
   entry : "./client/js/reactForm.js",
   output:{
-    path:__dirname+"/client/",
+    path:__dirname+"/client/js",
     filename: "bundle.js"
  },
  watch : true,
@@ -18,7 +18,7 @@ module.exports = {
        exclude : /node_modules/,
        loader: "babel-loader",
        query:{
-         presets: ["babel-preset-react","babel-preset-stage-0"]
+         presets: ["babel-preset-env","babel-preset-react","babel-preset-stage-0"]
        }
      }
 

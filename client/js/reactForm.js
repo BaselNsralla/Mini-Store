@@ -23,7 +23,7 @@ class Category extends React.Component {
           console.log('====================================');
           console.log(data);
           console.log('====================================');
-          data = JSON.parse(data)
+         
           return data.a
         }).then(data=>{
             data.forEach(key=>{
@@ -35,6 +35,8 @@ class Category extends React.Component {
            
 
          })
+       }).catch(err=>{
+         throw err
        })
       }
   
@@ -42,9 +44,9 @@ class Category extends React.Component {
 
 
   directOptions = () => {
-    return this.state.options.map(a=>{
+    return this.state.options.map((a,index)=>{
       return(
-          <option>{a}</option>
+          <option key={index}>{a}</option>
 
       )
 
@@ -75,7 +77,7 @@ class Form extends React.Component {
 
       <form id="form" method="post" action="/createProduct">
         
-          <h3>Category</h3>
+          <h3>APEEEEE</h3>
         
 
           <h3>Name:</h3>
@@ -94,7 +96,7 @@ class Form extends React.Component {
   render (){
     console.log("ok")
     return (
-      <div id="formContainer">
+      <div id="formContainer">f
         <h1>Create Product</h1>
           <Category  />
         {this.getForm()}
