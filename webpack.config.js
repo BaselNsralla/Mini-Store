@@ -1,8 +1,8 @@
 
 module.exports = {
-  entry : "./client/create/reactForm.js",
+  entry : "./client/js/reactForm.js",
   output:{
-    path:__dirname+"/client/create",
+    path:__dirname+"/client/",
     filename: "bundle.js"
  },
  watch : true,

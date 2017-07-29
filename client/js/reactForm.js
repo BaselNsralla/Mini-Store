@@ -4,25 +4,37 @@ import ReactDOM from 'react-dom';
 
 
 class Category extends React.Component {
+
+  constructor () {
+    super()
+    this.state = {
+      options : []
+    }
+    this.getOptions()
+  }
   getOptions =  () => {
-
-        fetch("http://localhost:8000/getCategories").then(data=>{
-
+    console.log("gettingOptions")
+        fetch("http://localhost:8192/getCategories")
+        .then(data=>{
           console.log('====================================');
           console.log(data);
           console.log('====================================');
+          return JSON.parse(data)
+        }).then(data=>{
+             Object.keys(data).forEach(key=>{
+              this.setState({
+                options:this.state.options.push(<option>key</option>)
+              })
+
+             })  
 
         })
-        return ( 
-            <option>{"options Here"}</option>
-        )
-
   }
 
   render () {
     return (
       <select>
-        {this.getOptions()}
+        {this.state.options}
       </select>
     )
   }

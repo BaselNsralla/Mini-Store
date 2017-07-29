@@ -9784,30 +9784,34 @@ var Category = function (_React$Component) {
   _inherits(Category, _React$Component);
 
   function Category() {
-    var _ref;
-
-    var _temp, _this, _ret;
-
     _classCallCheck(this, Category);
 
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
+    var _this = _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).call(this));
 
-    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = Category.__proto__ || Object.getPrototypeOf(Category)).call.apply(_ref, [this].concat(args))), _this), _this.getOptions = function () {
+    _this.getOptions = function () {
 
       fetch("http://localhost:8000/getCategories").then(function (data) {
-
         console.log('====================================');
         console.log(data);
         console.log('====================================');
+        return JSON.parse(data);
+      }).then(function (data) {
+        Object.keys(data).forEach(function (key) {
+          _this.setState({
+            options: _this.state.options.push(_react2.default.createElement(
+              'option',
+              null,
+              'key'
+            ))
+          });
+        });
       });
-      return _react2.default.createElement(
-        'option',
-        null,
-        "options Here"
-      );
-    }, _temp), _possibleConstructorReturn(_this, _ret);
+    };
+
+    _this.state = {
+      options: []
+    };
+    return _this;
   }
 
   _createClass(Category, [{
@@ -9816,7 +9820,7 @@ var Category = function (_React$Component) {
       return _react2.default.createElement(
         'select',
         null,
-        this.getOptions()
+        this.state.options
       );
     }
   }]);
@@ -9828,17 +9832,17 @@ var Form = function (_React$Component2) {
   _inherits(Form, _React$Component2);
 
   function Form() {
-    var _ref2;
+    var _ref;
 
-    var _temp2, _this2, _ret2;
+    var _temp, _this2, _ret;
 
     _classCallCheck(this, Form);
 
-    for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      args[_key2] = arguments[_key2];
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
     }
 
-    return _ret2 = (_temp2 = (_this2 = _possibleConstructorReturn(this, (_ref2 = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref2, [this].concat(args))), _this2), _this2.getForm = function () {
+    return _ret = (_temp = (_this2 = _possibleConstructorReturn(this, (_ref = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref, [this].concat(args))), _this2), _this2.getForm = function () {
       return _react2.default.createElement(
         'form',
         { id: 'form', method: 'post', action: '/createProduct' },
@@ -9862,7 +9866,7 @@ var Form = function (_React$Component2) {
         _react2.default.createElement('input', { type: 'text' }),
         _react2.default.createElement('input', { type: 'submit', value: 'send' })
       );
-    }, _temp2), _possibleConstructorReturn(_this2, _ret2);
+    }, _temp), _possibleConstructorReturn(_this2, _ret);
   }
 
   _createClass(Form, [{
