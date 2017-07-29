@@ -18,21 +18,23 @@ class Category extends React.Component {
   }
   getOptions =  () => {
     console.log("gettingOptions")
-        fetch("http://localhost:8192/getCategories")
+        fetch("http://localhost:8192/getCategories",{method:"GET"})
         .then(data=>{
           console.log('====================================');
           console.log(data);
           console.log('====================================');
          
-          return data.a
+          return data.json()
         }).then(data=>{
-            data.forEach(key=>{
+            data.a.forEach(key=>{
+              let modified = this.state.options.slice()
+              modified.push(key)
                 this.setState({
-                options:this.state.options.push(key)
-
+                options:modified
+                
               })
            
-           
+          console.log(key)
 
          })
        }).catch(err=>{
@@ -44,14 +46,13 @@ class Category extends React.Component {
 
 
   directOptions = () => {
-    return this.state.options.map((a,index)=>{
-      return(
-          <option key={index}>{a}</option>
+   let  k=[]
+   for(let i = 0; i<this.state.options.length;i++){
+     k.push(<option key={i}>{this.state.options[i]}</option>)
+   }
 
-      )
 
-    })
-
+  return k
 
   }
  

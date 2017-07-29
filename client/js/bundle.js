@@ -9780,18 +9780,22 @@ var Category = function (_React$Component) {
 
     _this.getOptions = function () {
       console.log("gettingOptions");
-      fetch("http://localhost:8192/getCategories").then(function (data) {
+      fetch("http://localhost:8192/getCategories", { method: "GET" }).then(function (data) {
         console.log('====================================');
         console.log(data);
         console.log('====================================');
 
-        return data.a;
+        return data.json();
       }).then(function (data) {
-        data.forEach(function (key) {
+        data.a.forEach(function (key) {
+          var modified = _this.state.options.slice();
+          modified.push(key);
           _this.setState({
-            options: _this.state.options.push(key)
+            options: modified
 
           });
+
+          console.log(key);
         });
       }).catch(function (err) {
         throw err;
@@ -9799,13 +9803,16 @@ var Category = function (_React$Component) {
     };
 
     _this.directOptions = function () {
-      return _this.state.options.map(function (a, index) {
-        return _react2.default.createElement(
+      var k = [];
+      for (var i = 0; i < _this.state.options.length; i++) {
+        k.push(_react2.default.createElement(
           'option',
-          { key: index },
-          a
-        );
-      });
+          { key: i },
+          _this.state.options[i]
+        ));
+      }
+
+      return k;
     };
 
     _this.state = {

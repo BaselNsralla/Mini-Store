@@ -6,15 +6,15 @@ let client = ds("localhost:8000/deepstream").login()
 let getCategories = (res) =>{
     console.log("get CATEGORIES")
     let record = client.record.getRecord("store")
-    //res.writeHead(200,{"Content-type":"application/json"})
+    res.writeHead(200,{"Content-type":"application/json"})
     var responseObject =  {a:[]}
     record.whenReady(()=>{
       Object.keys(record.get()).forEach(function(element) {
         console.log(element)
         responseObject.a.push(element)
       });
-       res.write(JSON.stringify(responseObject))
-      res.end()
+      
+      res.end(JSON.stringify(responseObject))
     })
 
     //TODO return data fetched from database as a json object to the createFrom
