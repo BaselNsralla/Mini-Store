@@ -70,18 +70,21 @@ class Category extends React.Component {
 
 class Form extends React.Component {
   getForm = ()=> {
+    
     return (
 
       <form id="form" method="post" action="/createProduct">
-        <h3>Category</h3>
-        <Category  />
+        
+          <h3>Category</h3>
+        
 
-        <h3>Name:</h3>
-        <input type="text"/>
+          <h3>Name:</h3>
+          <input type="text"/>
 
-        <h3>Price:</h3>
-        <input type="text"/>
-        <input type="submit" value="send"/>
+          <h3>Price:</h3>
+          <input type="text"/>
+          <input type="submit" value="send"/>
+        
       </form>
 
     )
@@ -89,10 +92,12 @@ class Form extends React.Component {
   }
 
   render (){
+    console.log("ok")
     return (
       <div id="formContainer">
-      <h1>Create Product</h1>
-      {this.getForm()}
+        <h1>Create Product</h1>
+          <Category  />
+        {this.getForm()}
       </div>
     )
 
