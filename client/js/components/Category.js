@@ -8,6 +8,7 @@ export default class Category extends React.Component {
     super()
     this.state = {
       options : [],
+      name :"option"
     
     }
     this.getOptions()
@@ -42,16 +43,21 @@ export default class Category extends React.Component {
     })
     return k
   }
+
+  selectionChange = (event) =>{
+    let name = this.state.name
+    this.props.handleChange(name,event)
+  }
  
 
   render () {
      console.log("something")
     return (
       <div>
-        <select>
+        <select onChange={this.selectionChange}>
           {this.directOptions()}
         </select>
-     </div>
+     </div> 
     )
   }
 }

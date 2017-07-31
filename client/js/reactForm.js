@@ -8,12 +8,16 @@ class Form extends React.Component {
   constructor() {
     super()
     this.state = {
-        form : {},
+        form : {
+          option:"sport"
+        },
       }
   }
 
-  handleChange = (event) =>{
-    let inputName = event.target.name
+  handleChange = (name,event) =>{
+    console.log(name)
+   
+    let inputName = name
     let inputValue = event.target.value
     let formObj = this.state.form
     formObj[inputName] = inputValue
@@ -24,21 +28,28 @@ class Form extends React.Component {
 
 
   getForm = ()=> {
+    //all data som ska lagras som keys
+    let name = "name"
+    let price = "price"
+    console.log(this.state)
      return (
       <form id="form" method="post" action="/createProduct">
-        <h3>APEEEEE</h3>
-        <Category  />
+        <Category handleChange={this.handleChange}  />
         <h3>Name:</h3>
-        <input type="text" name="name" onChange={this.handleChange}/>
+        <input type="text" name="name" onChange={
+          (event)=>this.handleChange(name,event)
+          }/>
         <h3>Price:</h3>
-        <input type="text" name="price" onChange={this.handleChange}/>
+        <input type="text" name="price" onChange={
+          (event)=>this.handleChange(price,event)
+          }/>
         <input type="submit" value="send"  />
       </form>
     )
   }
 
   render (){
-    console.log("ok")
+    console.log("something")
     return (
      <div style={style.container}> 
       <div style ={style.formContainer} id="formContainer">

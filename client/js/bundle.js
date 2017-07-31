@@ -9785,8 +9785,10 @@ var Form = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this));
 
-    _this.handleChange = function (event) {
-      var inputName = event.target.name;
+    _this.handleChange = function (name, event) {
+      console.log(name);
+
+      var inputName = name;
       var inputValue = event.target.value;
       var formObj = _this.state.form;
       formObj[inputName] = inputValue;
@@ -9796,33 +9798,38 @@ var Form = function (_React$Component) {
     };
 
     _this.getForm = function () {
+      //all data som ska lagras som keys
+      var name = "name";
+      var price = "price";
+      console.log(_this.state);
       return _react2.default.createElement(
         'form',
         { id: 'form', method: 'post', action: '/createProduct' },
-        _react2.default.createElement(
-          'h3',
-          null,
-          'APEEEEE'
-        ),
-        _react2.default.createElement(_Category2.default, null),
+        _react2.default.createElement(_Category2.default, { handleChange: _this.handleChange }),
         _react2.default.createElement(
           'h3',
           null,
           'Name:'
         ),
-        _react2.default.createElement('input', { type: 'text', name: 'name', onChange: _this.handleChange }),
+        _react2.default.createElement('input', { type: 'text', name: 'name', onChange: function onChange(event) {
+            return _this.handleChange(name, event);
+          } }),
         _react2.default.createElement(
           'h3',
           null,
           'Price:'
         ),
-        _react2.default.createElement('input', { type: 'text', name: 'price', onChange: _this.handleChange }),
+        _react2.default.createElement('input', { type: 'text', name: 'price', onChange: function onChange(event) {
+            return _this.handleChange(price, event);
+          } }),
         _react2.default.createElement('input', { type: 'submit', value: 'send' })
       );
     };
 
     _this.state = {
-      form: {}
+      form: {
+        option: "sport"
+      }
     };
     return _this;
   }
@@ -9830,7 +9837,7 @@ var Form = function (_React$Component) {
   _createClass(Form, [{
     key: 'render',
     value: function render() {
-      console.log("ok");
+      console.log("something");
       return _react2.default.createElement(
         'div',
         { style: _style2.default.container },
@@ -22597,8 +22604,14 @@ var Category = function (_React$Component) {
       return k;
     };
 
+    _this.selectionChange = function (event) {
+      var name = _this.state.name;
+      _this.props.handleChange(name, event);
+    };
+
     _this.state = {
-      options: []
+      options: [],
+      name: "option"
 
     };
     _this.getOptions();
@@ -22615,7 +22628,7 @@ var Category = function (_React$Component) {
         null,
         _react2.default.createElement(
           'select',
-          null,
+          { onChange: this.selectionChange },
           this.directOptions()
         )
       );
