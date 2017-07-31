@@ -9759,6 +9759,14 @@ var _reactDom = __webpack_require__(98);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _style = __webpack_require__(184);
+
+var _style2 = _interopRequireDefault(_style);
+
+var _Category = __webpack_require__(185);
+
+var _Category2 = _interopRequireDefault(_Category);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -9768,97 +9776,26 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 //vi testar utan ds här
-console.log("aaaa");
 
-var Category = function (_React$Component) {
-  _inherits(Category, _React$Component);
+var Form = function (_React$Component) {
+  _inherits(Form, _React$Component);
 
-  function Category() {
-    _classCallCheck(this, Category);
+  function Form() {
+    _classCallCheck(this, Form);
 
-    var _this = _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).call(this));
+    var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this));
 
-    _this.getOptions = function () {
-      console.log("gettingOptions");
-      fetch("http://localhost:8192/getCategories", { method: "GET" }).then(function (data) {
-        console.log('====================================');
-        console.log(data);
-        console.log('====================================');
-
-        return data.json();
-      }).then(function (data) {
-        data.a.forEach(function (key) {
-          var modified = _this.state.options.slice();
-          modified.push(key);
-          _this.setState({
-            options: modified
-
-          });
-
-          console.log(key);
-        });
-      }).catch(function (err) {
-        throw err;
+    _this.handleChange = function (event) {
+      var inputName = event.target.name;
+      var inputValue = event.target.value;
+      var formObj = _this.state.form;
+      formObj[inputName] = inputValue;
+      _this.setState({
+        form: formObj
       });
     };
 
-    _this.directOptions = function () {
-      var k = [];
-      for (var i = 0; i < _this.state.options.length; i++) {
-        k.push(_react2.default.createElement(
-          'option',
-          { key: i },
-          _this.state.options[i]
-        ));
-      }
-
-      return k;
-    };
-
-    _this.state = {
-      options: ["ape"],
-      alfa: ["aaass"]
-    };
-    _this.getOptions();
-
-    return _this;
-  }
-
-  _createClass(Category, [{
-    key: 'render',
-    value: function render() {
-      console.log("something");
-      return _react2.default.createElement(
-        'div',
-        null,
-        _react2.default.createElement(
-          'select',
-          null,
-          this.directOptions()
-        )
-      );
-    }
-  }]);
-
-  return Category;
-}(_react2.default.Component);
-
-var Form = function (_React$Component2) {
-  _inherits(Form, _React$Component2);
-
-  function Form() {
-    var _ref;
-
-    var _temp, _this2, _ret;
-
-    _classCallCheck(this, Form);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this2 = _possibleConstructorReturn(this, (_ref = Form.__proto__ || Object.getPrototypeOf(Form)).call.apply(_ref, [this].concat(args))), _this2), _this2.getForm = function () {
-
+    _this.getForm = function () {
       return _react2.default.createElement(
         'form',
         { id: 'form', method: 'post', action: '/createProduct' },
@@ -9867,21 +9804,27 @@ var Form = function (_React$Component2) {
           null,
           'APEEEEE'
         ),
+        _react2.default.createElement(_Category2.default, null),
         _react2.default.createElement(
           'h3',
           null,
           'Name:'
         ),
-        _react2.default.createElement('input', { type: 'text' }),
+        _react2.default.createElement('input', { type: 'text', name: 'name', onChange: _this.handleChange }),
         _react2.default.createElement(
           'h3',
           null,
           'Price:'
         ),
-        _react2.default.createElement('input', { type: 'text' }),
+        _react2.default.createElement('input', { type: 'text', name: 'price', onChange: _this.handleChange }),
         _react2.default.createElement('input', { type: 'submit', value: 'send' })
       );
-    }, _temp), _possibleConstructorReturn(_this2, _ret);
+    };
+
+    _this.state = {
+      form: {}
+    };
+    return _this;
   }
 
   _createClass(Form, [{
@@ -9890,15 +9833,18 @@ var Form = function (_React$Component2) {
       console.log("ok");
       return _react2.default.createElement(
         'div',
-        { id: 'formContainer' },
-        'f',
+        { style: _style2.default.container },
         _react2.default.createElement(
-          'h1',
-          null,
-          'Create Product'
+          'div',
+          { style: _style2.default.formContainer, id: 'formContainer' },
+          _react2.default.createElement(
+            'h1',
+            null,
+            'Create Product'
+          ),
+          this.getForm()
         ),
-        _react2.default.createElement(Category, null),
-        this.getForm()
+        _react2.default.createElement('div', { style: _style2.default.blank })
       );
     }
   }]);
@@ -22543,6 +22489,143 @@ var ReactDOMInvalidARIAHook = {
 
 module.exports = ReactDOMInvalidARIAHook;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 184 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var style = {
+    container: {
+        flex: 1,
+        flexDirection: "row"
+
+    },
+
+    formContainer: {
+        backgroundColor: "pink",
+        borderRadius: 5,
+        padding: 10,
+        flex: 1
+    },
+
+    blank: {
+        backgroundColor: "grey",
+        height: 50,
+        flex: 2
+
+    }
+
+};
+
+exports.default = style;
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(82);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactDom = __webpack_require__(98);
+
+var _reactDom2 = _interopRequireDefault(_reactDom);
+
+var _style = __webpack_require__(184);
+
+var _style2 = _interopRequireDefault(_style);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Category = function (_React$Component) {
+  _inherits(Category, _React$Component);
+
+  function Category() {
+    _classCallCheck(this, Category);
+
+    var _this = _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).call(this));
+
+    _this.getOptions = function () {
+      console.log("gettingOptions");
+      fetch("http://localhost:8192/getCategories", { method: "GET" }).then(function (data) {
+        return data.json();
+      }).then(function (data) {
+        data.a.forEach(function (key) {
+          var modified = _this.state.options.slice();
+          modified.push(key);
+          _this.setState({
+            options: modified
+
+          });
+        });
+      }).catch(function (err) {
+        throw err;
+      });
+    };
+
+    _this.directOptions = function () {
+      var k = [];
+      _this.state.options.forEach(function (item, i) {
+        k.push(_react2.default.createElement(
+          'option',
+          { key: i },
+          item
+        ));
+      });
+      return k;
+    };
+
+    _this.state = {
+      options: []
+
+    };
+    _this.getOptions();
+
+    return _this;
+  }
+
+  _createClass(Category, [{
+    key: 'render',
+    value: function render() {
+      console.log("something");
+      return _react2.default.createElement(
+        'div',
+        null,
+        _react2.default.createElement(
+          'select',
+          null,
+          this.directOptions()
+        )
+      );
+    }
+  }]);
+
+  return Category;
+}(_react2.default.Component);
+
+exports.default = Category;
 
 /***/ })
 /******/ ]);
