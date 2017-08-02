@@ -9797,6 +9797,19 @@ var Form = function (_React$Component) {
       });
     };
 
+    _this.handleSubmit = function (event) {
+      event.preventDefault();
+      items = _this.state.form;
+      var formData = new FormData();
+      for (var key in items) {
+        formData.append(key, items[key]);
+      }
+      fetch("http://localhost:8192/create/addItem", {
+        method: "post",
+        body: formData
+      });
+    };
+
     _this.getForm = function () {
       //all data som ska lagras som keys
       var name = "name";
@@ -9804,7 +9817,7 @@ var Form = function (_React$Component) {
       console.log(_this.state);
       return _react2.default.createElement(
         'form',
-        { id: 'form', method: 'post', action: '/createProduct' },
+        { id: 'form', method: 'post', action: '/createProduct', onSubmit: _this.handleSubmit() },
         _react2.default.createElement(_Category2.default, { handleChange: _this.handleChange }),
         _react2.default.createElement(
           'h3',

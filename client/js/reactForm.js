@@ -27,13 +27,27 @@ class Form extends React.Component {
   }
 
 
+  handleSubmit = (event) =>{
+    event.preventDefault()
+    items = this.state.form;
+    let formData = new FormData()
+    for(let key in items){
+      formData.append(key,items[key])
+    }
+    fetch("http://localhost:8192/create/addItem",{
+      method: "post",
+      body: formData 
+    })
+
+  }
+
   getForm = ()=> {
     //all data som ska lagras som keys
     let name = "name"
     let price = "price"
     console.log(this.state)
      return (
-      <form id="form" method="post" action="/createProduct">
+      <form id="form" method="post" action="/createProduct" onSubmit={this.handleSubmit()}>
         <Category handleChange={this.handleChange}  />
         <h3>Name:</h3>
         <input type="text" name="name" onChange={
