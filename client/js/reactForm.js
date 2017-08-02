@@ -45,6 +45,7 @@ class Form extends React.Component {
     //all data som ska lagras som keys
     let name = "name"
     let price = "price"
+    let currency = "currency"
     console.log(this.state)
      return (
       <form id="form" method="post" action="/createProduct" onSubmit={this.handleSubmit()}>
@@ -57,6 +58,9 @@ class Form extends React.Component {
         <input type="text" name="price" onChange={
           (event)=>this.handleChange(price,event)
           }/>
+         <input type="text" name="currency" onChange={
+          (event)=>this.handleChange(currency,event)
+          }/>  
         <input type="submit" value="send"  />
       </form>
     )

@@ -9814,6 +9814,7 @@ var Form = function (_React$Component) {
       //all data som ska lagras som keys
       var name = "name";
       var price = "price";
+      var currency = "currency";
       console.log(_this.state);
       return _react2.default.createElement(
         'form',
@@ -9834,6 +9835,9 @@ var Form = function (_React$Component) {
         ),
         _react2.default.createElement('input', { type: 'text', name: 'price', onChange: function onChange(event) {
             return _this.handleChange(price, event);
+          } }),
+        _react2.default.createElement('input', { type: 'text', name: 'currency', onChange: function onChange(event) {
+            return _this.handleChange(currency, event);
           } }),
         _react2.default.createElement('input', { type: 'submit', value: 'send' })
       );
