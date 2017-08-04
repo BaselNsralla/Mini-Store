@@ -4,23 +4,6 @@ const http = require('http'),
 const ds = require("deepstream.io-client-js")
 let client = ds("localhost:8000/deepstream").login()
 let qs = require("querystring")
-let getCategories = (res) =>{
-    console.log("get CATEGORIES")
-    let record = client.record.getRecord("store")
-    res.writeHead(200,{"Content-type":"application/json"})
-    var responseObject =  {a:[]}
-    record.whenReady(()=>{
-      Object.keys(record.get()).forEach(function(element) {
-        console.log(element)
-        responseObject.a.push(element)
-      });
-      
-      res.end(JSON.stringify(responseObject))
-    })
-
-    //TODO return data fetched from database as a json object to the createFrom
-}
-
 
 /* 
 ^\/find$|^\/find\/[a-z]*$
@@ -35,13 +18,15 @@ http.createServer((req,res)=>{
         body+= data
       })
       req.on("end",()=>{
-        body = qs.parse(body)
-        console.log(body)
+        body = JSON.parse(body)
         if (validateItem(body)){
-          appendItemToDb(body)
+         itemToDb(body)
+         console.log("secure")
+         res.end()
         }else {
+          console.log("UNSecure")
           //retunera och förmedla felet
-          res.end()
+         res.end()
         }
       })
 
@@ -108,16 +93,43 @@ let getContent = (category,res) => {
 }
 
 
-let appendItemToDb = (item) => {
+let itemToDb = (item) => {
+  client.record.has(`store/${item.option}`,
+    (err,has)=>{
+      if(has){
+         appendItemToRecord(item)  
+      }else {
+         appendKey(item)
+
+      }
+    })
+}
 
 
+let appendKey = (item) =>{
+  let keys = client.record.getRecord(`store/keys`)
+  keys.whenReady(()=>{
+    let allKeys = keys.get("all")
+    allKeys.push(item)
+    keys.set("all",allKeys)
+    appendItemToRecord(item)        
+  })
+}
+
+
+let appendItemToRecord = (item)=>{
+  let record = client.record.getRecord(`store/${item.option}`)
+  record.whenReady(()=>{
+    delete item.option
+    record.set(client.getUid(),item)
+ })  
 }
 
 
 let validateItem = (body) => {
   let nonDgit = new RegExp(/\D/g)
-  let nonWordOrDigit = new RegExp(/\W/g)
-  let moreThanOneChar = new RegExp(/.{2}/g)
+  let nonWordOrDigit = new RegExp(/[^a-zA-Z\d\s:]/gu)
+  let moreThanOneChar = new RegExp(/.{2}/gu)
   if(regexValidation("name",nonWordOrDigit,body)&&
      regexValidation("price",nonDgit,body)&&
      regexValidation("currency",moreThanOneChar,body)&&
@@ -131,6 +143,7 @@ let validateItem = (body) => {
 
 let regexValidation = (key, regex,body) => {
   if (body[key]!=undefined && body[key]!="" && body[key]!=null){
+    
     if(body[key].match(regex)){
       return false
     }else {
@@ -141,3 +154,19 @@ let regexValidation = (key, regex,body) => {
   return false
 
 } 
+
+let getCategories = (res) =>{
+    console.log("get CATEGORIES")
+    let record = client.record.getRecord("store/keys")
+    res.writeHead(200,{"Content-type":"application/json"})
+    var responseObject =  {a:[]}
+    record.whenReady(()=>{
+      let keysArray = record.get().all
+      keysArray.forEach(function(element) {
+        console.log(element)
+        responseObject.a.push(element)
+      });
+      
+      res.end(JSON.stringify(responseObject))
+    })
+}

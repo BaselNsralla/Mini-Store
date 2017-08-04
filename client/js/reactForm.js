@@ -29,14 +29,17 @@ class Form extends React.Component {
 
   handleSubmit = (event) =>{
     event.preventDefault()
-    items = this.state.form;
+    let item = this.state.form;
     let formData = new FormData()
-    for(let key in items){
-      formData.append(key,items[key])
+    for(let key in item){
+      formData.append(key,item[key])
     }
     fetch("http://localhost:8192/create/addItem",{
       method: "post",
-      body: formData 
+      headers:{
+        "Content-type":"application/json"
+      },
+      body: JSON.stringify(item) 
     })
 
   }
@@ -48,7 +51,7 @@ class Form extends React.Component {
     let currency = "currency"
     console.log(this.state)
      return (
-      <form id="form" method="post" action="/createProduct" onSubmit={this.handleSubmit()}>
+      <form id="form" method="post" action="/createProduct" onSubmit={this.handleSubmit}>
         <Category handleChange={this.handleChange}  />
         <h3>Name:</h3>
         <input type="text" name="name" onChange={
