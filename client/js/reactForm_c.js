@@ -22597,6 +22597,10 @@ var _style = __webpack_require__(83);
 
 var _style2 = _interopRequireDefault(_style);
 
+var _fetchCategories = __webpack_require__(186);
+
+var _fetchCategories2 = _interopRequireDefault(_fetchCategories);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -22613,22 +22617,24 @@ var Category = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (Category.__proto__ || Object.getPrototypeOf(Category)).call(this));
 
-    _this.getOptions = function () {
-      console.log("gettingOptions");
-      fetch("http://localhost:8192/getCategories", { method: "GET" }).then(function (data) {
-        return data.json();
-      }).then(function (data) {
-        data.a.forEach(function (key) {
-          var modified = _this.state.options.slice();
-          modified.push(key);
-          _this.setState({
-            options: modified
+    _this.getCategories = function () {
+      // console.log("gettingOptions")
+      //     fetch("http://localhost:8192/getCategories",{method:"GET"})
+      //     .then(data=>{
+      //       return data.json()
+      //     }).then(data=>{
+      //         data.a.forEach(key=>{
+      //           let modified = this.state.options.slice()s
+      //           modified.push(key)
+      //             this.setState({
+      //             options:modified
 
-          });
-        });
-      }).catch(function (err) {
-        throw err;
-      });
+      //           })
+      //     })
+      //    }).catch(err=>{
+      //      throw err
+      //    })
+      (0, _fetchCategories2.default)(_this, "options");
     };
 
     _this.directOptions = function () {
@@ -22653,7 +22659,7 @@ var Category = function (_React$Component) {
       name: "option"
 
     };
-    _this.getOptions();
+    _this.getCategories();
 
     return _this;
   }
@@ -22678,6 +22684,36 @@ var Category = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = Category;
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function fetchCategories(object, key) {
+  console.log("gettingOptions");
+  var modified = object.state.options.slice();
+  fetch("http://localhost:8192/getCategories", { method: "GET" }).then(function (data) {
+    return data.json();
+  }).then(function (data) {
+    data.a.forEach(function (key) {
+
+      modified.push(key);
+    });
+    var newState = {};
+    newState[key] = modified;
+    object.setState(newState);
+  }).catch(function (err) {
+    throw err;
+  });
+}
+
+exports.default = fetchCategories;
 
 /***/ })
 /******/ ]);

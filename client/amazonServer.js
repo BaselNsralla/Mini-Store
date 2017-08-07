@@ -1,6 +1,7 @@
 const http = require('http'),
       fs = require('fs'),
-      path = require('path');
+      path = require('path')
+      formidable = require("formidable");
 const ds = require("deepstream.io-client-js")
 let client = ds("localhost:8000/deepstream").login()
 let qs = require("querystring")
@@ -14,30 +15,45 @@ http.createServer((req,res)=>{
   if(req.method == "POST"){
     if(req.url == "/create/addItem"){
       let body = ""
-      req.on('data',(data)=>{
-        body+= data
-      })
-      req.on("end",()=>{
-        body = JSON.parse(body)
-        if (validateItem(body)){
-         itemToDb(body)
-         console.log("secure")
-         res.end()
-        }else {
-          console.log("UNSecure")
-          //retunera och förmedla felet
-         res.end()
-        }
-      })
+      // req.on('data',(data)=>{
+      //   body+= data
+      // })
+      //req.on("end",()=>{
+        let formHandler = formidable.IncomingForm();
+        //body = JSON.parse(body)
 
+        formHandler.parse(req,(err,fields,files)=>{
+          let pic = files.pic
+              tempPath = pic.path;
+              upploadPath = `${__dirname}/images/${pic.name}`
+          fs.rename(tempPath, upploadPath, err=>{
+            if (err) throw err;
+          })    
+          console.log("========")
+          let body = fields
+          if (validateItem(body)){
+            itemToDb(body)
+            
+            
+            console.log("secure")
+            //redirect to admin page
+            res.end()
+          }else {
+            console.log("UNsecure")  
+              //retunera och förmedla felet
+            res.end()
+          }
+        })
+     
+      //})
     }
 
   }else if (req.method == "GET"){
-      if (req.url.match(/^\/find$|^\/find\/[a-z]*$/g)) {
+      if (req.url.match(/^\/find$|^\/find\/[a-z]*$/gi)) {
       let category = req.url.split("/")[2]||"All"
       res.writeHead(200,{"Content-Type": "text/html"})
       getContent(category,res)
-    }else if (req.url.match(/^\/make$/g)) {
+    }else if (req.url.match(/^\/create$/gi)) {
         res.writeHead(200,{"Content-Type": "text/html"})
         p =  path.join(__dirname,"create/create.html")
         const readStream = fs.createReadStream(p)
@@ -45,7 +61,7 @@ http.createServer((req,res)=>{
         readStream.on("end",()=>{
           res.end()
         })
-    }else if(req.url.match(/^\/getCategories$/g)){
+    }else if(req.url.match(/^\/getCategories$/gi)){
         getCategories(res)
     }else if(req.url.match(/.js$/g)){
       //TODO return the js files related, i have to change the webpack 
@@ -57,6 +73,10 @@ http.createServer((req,res)=>{
           readStream.on("end",()=>{
             res.end()
           })
+    }else if (req.url.match(/^\/body$/gi)){
+     //TODO  return body
+
+
     }
 
   }

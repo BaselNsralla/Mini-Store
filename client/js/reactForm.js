@@ -26,6 +26,17 @@ class Form extends React.Component {
     })
   }
 
+  handleImageChange = (name,event) =>{
+    let reader = new FileReader();
+    let file = event.target.files[0]
+    let formObj = this.state.form
+    formObj[name] = file
+    this.setState({
+      form:formObj
+    })
+
+  }
+
 
   handleSubmit = (event) =>{
     event.preventDefault()
@@ -34,13 +45,19 @@ class Form extends React.Component {
     for(let key in item){
       formData.append(key,item[key])
     }
-    fetch("http://localhost:8192/create/addItem",{
+    // fetch("http://localhost:8192/create/addItem",{
+    //   method: "post",
+    //   headers:{
+    //     "Content-type":"application/json"
+    //   },
+    //   body: JSON.stringify(item) 
+    // })
+
+      fetch("http://localhost:8192/create/addItem",{
       method: "post",
-      headers:{
-        "Content-type":"application/json"
-      },
-      body: JSON.stringify(item) 
+      body: formData
     })
+
 
   }
 
@@ -49,6 +66,7 @@ class Form extends React.Component {
     let name = "name"
     let price = "price"
     let currency = "currency"
+    let pic = "pic"
     console.log(this.state)
      return (
       <form id="form" method="post" action="/createProduct" onSubmit={this.handleSubmit}>
@@ -61,9 +79,13 @@ class Form extends React.Component {
         <input type="text" name="price" onChange={
           (event)=>this.handleChange(price,event)
           }/>
-         <input type="text" name="currency" onChange={
+        <input type="text" name="currency" onChange={
           (event)=>this.handleChange(currency,event)
-          }/>  
+          }/>
+
+        <input type="file" name="pic" onChange={
+          (event)=>this.handleImageChange(pic,event)
+          }/>   
         <input type="submit" value="send"  />
       </form>
     )

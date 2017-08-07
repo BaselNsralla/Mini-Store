@@ -1,10 +1,10 @@
 
 module.exports = {
 
-  entry : "./client/js/reactForm.js",
+  entry : "./client/js/reactHome.js",
   output:{
     path:__dirname+"/client/js",
-    filename: "bundle.js"
+    filename: "reactHome_c.js"
  },
  watch : true,
  externals: {
