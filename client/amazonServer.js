@@ -26,11 +26,13 @@ http.createServer((req,res)=>{
           let pic = files.pic
               tempPath = pic.path;
               upploadPath = `${__dirname}/images/${pic.name}`
+
           fs.rename(tempPath, upploadPath, err=>{
             if (err) throw err;
           })    
           console.log("========")
           let body = fields
+          body["imagePath"] = upploadPath
           if (validateItem(body)){
             itemToDb(body)
             
@@ -75,8 +77,10 @@ http.createServer((req,res)=>{
           })
     }else if (req.url.match(/^\/body$/gi)){
      //TODO  return body
+      getAllItems((allItems)=>{
+        //gör en stream av allItems o pipa den i din response
 
-
+      })
     }
 
   }
@@ -150,10 +154,12 @@ let validateItem = (body) => {
   let nonDgit = new RegExp(/\D/g)
   let nonWordOrDigit = new RegExp(/[^a-zA-Z\d\s:]/gu)
   let moreThanOneChar = new RegExp(/.{2}/gu)
+  let nonPathyChars = new RegExp(/[^\w\/\\]/gui)
   if(regexValidation("name",nonWordOrDigit,body)&&
      regexValidation("price",nonDgit,body)&&
      regexValidation("currency",moreThanOneChar,body)&&
-     regexValidation("option",nonWordOrDigit,body)){
+     regexValidation("option",nonWordOrDigit,body)&&
+     regexValidation("imagePath",nonPathyChars,body)){
       return true
   }else {
       return false
@@ -182,7 +188,7 @@ let getCategories = (res) =>{
     var responseObject =  {a:[]}
     record.whenReady(()=>{
       let keysArray = record.get().all
-      keysArray.forEach(function(element) {
+      keysArray.forEach((element)=> {
         console.log(element)
         responseObject.a.push(element)
       });
@@ -190,3 +196,30 @@ let getCategories = (res) =>{
       res.end(JSON.stringify(responseObject))
     })
 }
+
+let getAllItems = (callback)=>{
+  let record = client.record.getRecord(`store/keys`)
+  record.whenReady(()=>{
+  let keys = record.get("all")
+  /// v:__ skapa eventEmitter objectet
+  //keys forEach append the returned record to response body which will be sent to the callBACK argument
+    let allData = {}
+    let end = keys.lenght()-1 
+    keys.forEach((key,i)=>{
+      let r = client.record.getRecord(`store/${key}`)
+      r.whenReady(()=>{
+        let storeItems = r.get()
+        allData[key] = storeItems
+        /// v:__ emitta data med datan varje gång du pushar data 
+        if (i==end) {
+          callback(allData)
+        }
+      })
+
+    })
+
+  })
+  
+}
+
+

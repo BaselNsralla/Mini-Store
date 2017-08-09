@@ -13,7 +13,9 @@ class Body extends React.Component {
     }
 
     getBodyAsJSON=()=>{
-        fetch("http://localhost:8192/body",{method:"get"})
+        let urlSub = this.state.category 
+        //antigen filtrera det som kom eller kör med urlSub
+        fetch(`http://localhost:8192/body/${urlSub}`,{method:"get"})
         .then((data)=>data.json())
         .then((data)=>{
             //borde få array av array eftersom "all" måste hanteras på olika categorier
