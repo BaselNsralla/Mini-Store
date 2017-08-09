@@ -5,7 +5,7 @@ const http = require('http'),
 const ds = require("deepstream.io-client-js")
 let client = ds("localhost:8000/deepstream").login()
 let qs = require("querystring")
-
+let readStream = require("stream").PassThrough
 /* 
 ^\/find$|^\/find\/[a-z]*$
 /find sen slut eller /find/något ord eller /find/
@@ -77,9 +77,12 @@ http.createServer((req,res)=>{
           })
     }else if (req.url.match(/^\/body$/gi)){
      //TODO  return body
-      getAllItems((allItems)=>{
+      let rs = new readStream()
+      res.writeHead(200,{"Content-type":"application/json"})
+      rs.pipe(res)
+      getAllItems(rs,(allItems)=>{
         //gör en stream av allItems o pipa den i din response
-
+        
       })
     }
 
@@ -197,22 +200,30 @@ let getCategories = (res) =>{
     })
 }
 
-let getAllItems = (callback)=>{
+let getAllItems = (rs,callback)=>{
   let record = client.record.getRecord(`store/keys`)
   record.whenReady(()=>{
-  let keys = record.get("all")
+    let keys = record.get("all")
   /// v:__ skapa eventEmitter objectet
   //keys forEach append the returned record to response body which will be sent to the callBACK argument
     let allData = {}
-    let end = keys.lenght()-1 
+    let end = keys.length -1 
+    rs.push("{")
     keys.forEach((key,i)=>{
       let r = client.record.getRecord(`store/${key}`)
       r.whenReady(()=>{
-        let storeItems = r.get()
+        let rawItems = r.get()
+        let storeItems = rawItems
+        let stringified = JSON.stringify(storeItems)
         allData[key] = storeItems
+        let coma = i==end?"":","
+        rs.push(`"${key}":${stringified}${coma}`)
+
         /// v:__ emitta data med datan varje gång du pushar data 
         if (i==end) {
           callback(allData)
+          rs.push("}")
+          rs.push(null)
         }
       })
 
