@@ -15,13 +15,7 @@ http.createServer((req,res)=>{
   if(req.method == "POST"){
     if(req.url == "/create/addItem"){
       let body = ""
-      // req.on('data',(data)=>{
-      //   body+= data
-      // })
-      //req.on("end",()=>{
-        let formHandler = formidable.IncomingForm();
-        //body = JSON.parse(body)
-
+        let formHandler = formidable.IncomingForm()
         formHandler.parse(req,(err,fields,files)=>{
           let pic = files.pic
               tempPath = pic.path;
@@ -44,6 +38,8 @@ http.createServer((req,res)=>{
             console.log("UNsecure")  
               //retunera och förmedla felet
             res.end()
+
+
           }
         })
      
@@ -84,6 +80,11 @@ http.createServer((req,res)=>{
         //gör en stream av allItems o pipa den i din response
         
       })
+    }else if (req.url ==="/" || req.url ==="/home"){
+      res.writeHead(200,{"Content-type":"text/html"})
+      let readStream = fs.createReadStream(path.join(__dirname,"/html/home.html"))
+      readStream.pipe(res)
+
     }
 
   }

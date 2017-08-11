@@ -1,13 +1,14 @@
 import React from "react"
-import ReactDom from "react-dom"
+import ReactDOM from "react-dom"
 import fetchCategories from "../functions/fetch/fetchCategories.js"
 
 
 class SideBar extends React.Component{
-    constructor(){
+    constructor(props){
         super(props)
         this.state = {
-            items: []
+            items: [],
+            category: this.props.category
         }
         this.getListItems()
     }
@@ -18,25 +19,29 @@ class SideBar extends React.Component{
 
 
     handleCategoryChoice = (category,event)=>{
-        this.props.category = category
-
+        this.props.categoryChanger(category)
     }
 
     listifyItems = () => {
+        if (this.state.items.length==0 ) {
+            return null
+        }
         return this.state.items.map((item,i) =>{
             return (
-                <li key={i} onClick={(event)=>handleCategoryChoice(item,event)}>{item}</li>
+                <li key={i} onClick={(event)=>this.handleCategoryChoice(item,event)}>{item}</li>
             )   
         })
 
     }
 
     render(){
-        <div class="nav">
+        console.log("side")
+        return(
+        <div className="nav">
             <ul>
                 {this.listifyItems()}
             </ul>
-        </div>        
+        </div> )       
     }
 
 }

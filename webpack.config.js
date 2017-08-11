@@ -6,6 +6,7 @@ module.exports = {
     path:__dirname+"/client/js",
     filename: "reactHome_c.js"
  },
+  devtool: 'eval-source-map',
  watch : true,
  externals: {
   ws: 'WebSocket'

@@ -18,6 +18,26 @@ let style ={
          height:50,
         flex: 2,
        
+    },
+    contentWrapper:{
+        display:"flex",
+        flexDirection: "row",
+
+    },
+
+    bodyHolder : {
+        display:"flex",
+        flexDirection: "row",
+        flex: "wrap",
+        backgroundColor:"red",
+    },
+
+    cardHolder: {
+        width : 200,
+        height : 400,
+        backgroundColor: "grey",
+        margin: 10,
+       
     }
 
 

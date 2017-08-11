@@ -1,6 +1,6 @@
-function fetchCategories (object,key) {
+function fetchCategories (self,key) {
     console.log("gettingOptions")
-    let modified = object.state.options.slice()
+    let modified = self.state[key].slice()
         fetch("http://localhost:8192/getCategories",{method:"GET"})
         .then(data=>{
           return data.json()
@@ -12,7 +12,7 @@ function fetchCategories (object,key) {
         })
         let newState = {}
         newState[key] = modified
-        object.setState(newState)
+        self.setState(newState)
        }).catch(err=>{
          throw err
        })
